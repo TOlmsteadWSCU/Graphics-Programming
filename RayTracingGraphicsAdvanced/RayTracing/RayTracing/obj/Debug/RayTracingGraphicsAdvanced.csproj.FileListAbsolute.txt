@@ -1,0 +1,3 @@
+C:\Users\Owner\Documents\Graphics Programming\RayTracingGraphicsAdvanced\RayTracing\RayTracing\bin\Debug\RayTracing.exe.config
+C:\Users\Owner\Documents\Graphics Programming\RayTracingGraphicsAdvanced\RayTracing\RayTracing\obj\Debug\RayTracing.exe
+C:\Users\Owner\Documents\Graphics Programming\RayTracingGraphicsAdvanced\RayTracing\RayTracing\obj\Debug\RayTracing.pdb

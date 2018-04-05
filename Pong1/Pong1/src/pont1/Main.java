@@ -1,0 +1,319 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package pont1;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Random;
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
+/**
+ *
+ * @author micalinscheid
+ */
+public class Main extends javax.swing.JFrame {
+
+    public int leftScore = 0;
+    public int rightScore = 0;
+    public static final int fieldWidth = 600;
+    public static final int fieldHeight = 300;
+    public static final int paddleWidth = 5;
+    public static final int paddleHeight = 50;
+    public static final int leftPaddlex = 15;
+    public int rightPaddlex = fieldWidth - 15;
+    public int leftPaddley = 150;
+    public int rightPaddley = 150;
+    public int ballxv = 10;
+    public int ballyv = 10;
+    public static final int ballRadius = 5;
+    public Random randoms = new Random();
+  
+
+    /**
+     * Creates new form Main
+     */
+    public int ballx = 300, bally = -50;
+
+    public Main() {
+        initComponents();
+
+    }
+
+    public void launchBall() {
+        ballx = fieldWidth / 2;
+        bally = fieldHeight / 2;
+
+        ballxv = randoms.nextInt(16) + 5;
+        int fidyfidy = randoms.nextInt(2);
+        if (fidyfidy % 2 == 0) {
+            ballxv = ballxv;
+
+        } else {
+            ballxv = -ballxv;
+        }
+        ballyv = randoms.nextInt(31) - 15;
+    }
+
+    public Timer clock = new Timer(50, new ActionListener() {  // 50ms delay between ticks
+        public void actionPerformed(ActionEvent e) {
+            tick();               // Write a method named tick to advance your game
+            viewPanel.repaint();
+
+        }
+    });  // panel is the name of the JPanel that displays the game
+
+    public void move() {
+
+        ballx += ballxv;
+        bally += ballyv;
+
+        if (bally < ballRadius) {
+            ballyv = -ballyv;
+            bally = 2 * ballRadius - bally; // Nudge the ball back onto the field 
+            // ballRadius is the "bounce point" - the general
+            // formula is 2*bouncepoint - old value
+        }
+        if (bally > fieldHeight - ballRadius) {
+            ballyv = -ballyv;
+            bally = 2 * (fieldHeight - ballRadius) - bally; // Nudge the ball back onto the field 
+            // ballRadius is the "bounce point" - the general
+            // formula is 2*bouncepoint - old value
+        }
+
+    }
+
+    public void tick() {
+        move();
+        //rightPaddle
+        if ((ballx > rightPaddlex - paddleWidth / 2) && ((rightPaddley - paddleHeight / 2 < bally)
+                && (bally < rightPaddley + paddleHeight / 2))) {
+            ballxv = -ballxv;
+            //ballx = 2 * (rightPaddlex - paddleWidth) - ballx;
+            ballx = rightPaddlex - paddleWidth / 2 - 2 * ballRadius;
+
+        }
+
+        //leftPaddle
+        if ((ballx < leftPaddlex + paddleWidth / 2) && ((leftPaddley - paddleHeight / 2 < bally)
+                && (bally < leftPaddley + paddleHeight / 2))) {
+            ballxv = -ballxv;
+            //ballx = 2 * (leftPaddlex - paddleWidth) + ballx;
+            ballx = leftPaddlex + paddleWidth / 2 + 2 * ballRadius;
+
+        }
+
+        //rightScore
+        if (ballx <= ballRadius) {
+            rightScore++;
+            rightLabel.setText("Score: " + rightScore);
+            launchBall();
+        }
+        //leftScore
+        if (ballx >= fieldWidth - ballRadius) {
+            leftScore++;
+            leftLabel.setText("Score: " + leftScore);
+            launchBall();
+
+        }
+    }
+
+    public class MyPanel extends JPanel {
+
+        @Override
+        public void paint(Graphics g) {
+            super.paint(g);
+            // Insert code to paint the scene here.
+            // Use methods in the Graphics class to do the painting
+            // Remember coordinates use (0,0) at the top left
+
+            //background fill
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(0, 0, fieldWidth, fieldHeight);
+            //ball
+            g.setColor(Color.RED);
+            g.fillOval(ballx - ballRadius, bally - ballRadius, 2 * ballRadius, 2 * ballRadius);
+            //paddle left
+            g.setColor(Color.BLUE);
+            g.fillRect(leftPaddlex - paddleWidth / 2, leftPaddley - paddleHeight / 2, paddleWidth, paddleHeight);
+            //paddle right
+            g.setColor(Color.YELLOW);
+            g.fillRect(rightPaddlex - paddleWidth / 2, rightPaddley - paddleHeight / 2, paddleWidth, paddleHeight);
+            System.out.println("hello");
+        }
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        viewPanel = new MyPanel()
+        ;
+        jLabel1 = new javax.swing.JLabel();
+        Start = new javax.swing.JButton();
+        leftLabel = new javax.swing.JLabel();
+        rightLabel = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        viewPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                viewPanelMouseMoved(evt);
+            }
+        });
+        viewPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                viewPanelMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout viewPanelLayout = new javax.swing.GroupLayout(viewPanel);
+        viewPanel.setLayout(viewPanelLayout);
+        viewPanelLayout.setHorizontalGroup(
+            viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+        );
+        viewPanelLayout.setVerticalGroup(
+            viewPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Lucida Grande", 0, 36)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(51, 51, 255));
+        jLabel1.setText("Pong by Mica Linscheid");
+
+        Start.setBackground(new java.awt.Color(255, 102, 102));
+        Start.setFont(new java.awt.Font("Malayalam MN", 0, 48)); // NOI18N
+        Start.setText("Start");
+        Start.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                StartActionPerformed(evt);
+            }
+        });
+
+        leftLabel.setText("Score: 0");
+
+        rightLabel.setText("Score: 0");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
+                .addComponent(viewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(Start)
+                .addGap(54, 54, 54)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(leftLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(rightLabel)
+                .addGap(67, 67, 67))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(Start))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jLabel1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(viewPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(leftLabel)
+                    .addComponent(rightLabel))
+                .addContainerGap())
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void viewPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPanelMouseClicked
+       // ballx = evt.getX();
+        //bally = evt.getY();
+    }//GEN-LAST:event_viewPanelMouseClicked
+
+    private void viewPanelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_viewPanelMouseMoved
+        leftPaddley = evt.getY();
+        rightPaddley = evt.getX() / 2;
+    }//GEN-LAST:event_viewPanelMouseMoved
+
+    private void StartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_StartActionPerformed
+        ballx = 300;
+        bally = 150;
+        clock.start();
+        launchBall();
+    }//GEN-LAST:event_StartActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Main.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Main().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Start;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel leftLabel;
+    private javax.swing.JLabel rightLabel;
+    private javax.swing.JPanel viewPanel;
+    // End of variables declaration//GEN-END:variables
+}
